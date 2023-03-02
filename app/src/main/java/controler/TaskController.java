@@ -32,6 +32,7 @@ public class TaskController {
             statement.setDate(6, new Date(task.getDeadline().getTime()));
             statement.setDate(7, new Date(task.getCreatedAt().getTime()));
             statement.setDate(8, new Date(task.getUpdateAt().getTime()));
+
             statement.execute();
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar tarefa " + e.getMessage(), e);
@@ -60,10 +61,11 @@ public class TaskController {
             statement.setDate(6, new Date(task.getDeadline().getTime()));
             statement.setDate(7, new Date(task.getCreatedAt().getTime()));
             statement.setDate(8, new Date(task.getUpdateAt().getTime()));
+            statement.setInt(9, task.getId());
             statement.execute();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar tarefa " + e.getMessage(), e);
+            throw new RuntimeException("Erro ao atualizar tarefa " + e.getMessage(), e);
         } finally {
             ConnectionFactory.closeConnection(connection, statement);
         }

@@ -64,3 +64,4 @@ public class ConnectionFactory {
             throw new RuntimeException("Erro ao fechar conexão", e);
         }
     }
+}

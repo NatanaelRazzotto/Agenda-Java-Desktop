@@ -18,6 +18,12 @@ public class Project {
         this.createdAt = createdAt;
         this.updateAt = updateAt;
     }
+    
+    public Project(){
+        this.createdAt = new Date();
+        this.updateAt = new Date();
+        
+    }
 
     public int getId() {
         return id;
