@@ -10,13 +10,15 @@ import javax.swing.DefaultListModel;
 import model.Project;
 import model.Task;
 import java.util.List;
+import util.TaskTableModel;
 
 public class MainScreen extends javax.swing.JFrame {
 
     ProjectController projectController;
     TaskController taskController;
     
-    DefaultListModel projectModel;
+    DefaultListModel projectsModel;
+    TaskTableModel taskModel;
     
         
     public MainScreen() {
@@ -415,22 +417,31 @@ public class MainScreen extends javax.swing.JFrame {
     } 
     
     public void initComponentModel(){
-        projectModel = new DefaultListModel();
+        projectsModel = new DefaultListModel();
         loadProjects();
+        
+        taskModel = new TaskTableModel();
+        jTableTasks.setModel(taskModel);
+        loadTask();
+        
     }
     
     public void loadProjects(){
         List<Project> projets = projectController.getAll();
         System.out.println(projets);
-        projectModel.clear();
+        projectsModel.clear();
         
         for (int i = 0; i < projets.size(); i++) {
             Project project = projets.get(i);
-            projectModel.addElement(project);
+            projectsModel.addElement(project);
         }
         
-        jListProjects.setModel(projectModel);
-        
+        jListProjects.setModel(projectsModel);
+                
+    }
+    public void loadTask (){
+        List<Task> tasks = taskController.getAll(2);
+        taskModel.setTasks(tasks);
         
     }
 }
