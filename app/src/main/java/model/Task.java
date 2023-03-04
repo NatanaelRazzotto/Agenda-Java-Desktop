@@ -37,6 +37,7 @@ public class Task {
         this.createdAt = new Date();
         this.updateAt = new Date();
         this.deadline = new Date();
+        this.isCompleted = false;
         
     }
 

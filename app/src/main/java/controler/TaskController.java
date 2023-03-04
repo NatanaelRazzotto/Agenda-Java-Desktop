@@ -16,12 +16,13 @@ import util.ConnectionFactory;
 public class TaskController {
 
     public void save(Task task) {
-        String sql = "INSERT INTO tasks (IDPROJECT,NAME,DESCRIPTION,COMPLETED"
+        String sql = "INSERT INTO tasks (IDPROJECT,NAME,DESCRIPTION,COMPLETED,"
                 + "NOTES,DEADLINE,CREATEDAT,UPDATEDAT) VALUES (?,?,?,?,?,?,?,?)";
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
+            System.out.println(task);
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setInt(1, task.getIdProject());
