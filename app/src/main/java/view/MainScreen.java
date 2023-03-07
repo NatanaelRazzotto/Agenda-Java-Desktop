@@ -16,15 +16,14 @@ public class MainScreen extends javax.swing.JFrame {
 
     ProjectController projectController;
     TaskController taskController;
-    
+
     DefaultListModel projectsModel;
     TaskTableModel taskModel;
-    
-        
+
     public MainScreen() {
         initComponents();
         decorateTableTask();
-        
+
         initDataController();
         initComponentModel();
     }
@@ -270,6 +269,11 @@ public class MainScreen extends javax.swing.JFrame {
         jTableTasks.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTableTasks.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTableTasks.setShowHorizontalLines(true);
+        jTableTasks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableTasksMouseClicked(evt);
+            }
+        });
         jScrollPaneTasks.setViewportView(jTableTasks);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -325,26 +329,46 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void jLabelProjectsAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelProjectsAddMouseClicked
         // TODO add your handling code here:
-        ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this,rootPaneCheckingEnabled);
+        ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
         projectDialogScreen.setVisible(true);
-        
+
         //adicionando um listener, um ouvinte de janela que avisa que a janela foi fechada
-        projectDialogScreen.addWindowListener( new WindowAdapter() {
-            public void windowClosed(WindowEvent e){
+        projectDialogScreen.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
                 loadProjects();
             }
         });
-        
-        
+
+
     }//GEN-LAST:event_jLabelProjectsAddMouseClicked
 
     private void jLabelTasksAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTasksAddMouseClicked
-        TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);        
-       // taskDialogScreen.setProject(null);
+        TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
+        // taskDialogScreen.setProject(null);
         taskDialogScreen.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_jLabelTasksAddMouseClicked
+
+    private void jTableTasksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTasksMouseClicked
+        System.out.println("teste");
+        
+        int rowInex = jTableTasks.rowAtPoint(evt.getPoint());
+        int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
+
+        switch (columnIndex) {           
+            case 3:
+                Task task = taskModel.getTasks().get(rowInex);
+                taskController.update(task);
+                break;
+            case 4:
+                break;
+
+            default:
+                throw new AssertionError();
+        }
+
+    }//GEN-LAST:event_jTableTasksMouseClicked
 
     /**
      * @param args the command line arguments
@@ -404,46 +428,47 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JTable jTableTasks;
     // End of variables declaration//GEN-END:variables
 
-    public void decorateTableTask(){
+    public void decorateTableTask() {
         //customizando o header da table de tarefas
-        jTableTasks.getTableHeader().setFont( new Font("Segoe UI", Font.BOLD, 14));
-        jTableTasks.getTableHeader().setBackground(new Color(0,153,102));
-        jTableTasks.getTableHeader().setForeground(new Color(255,255,255));
+        jTableTasks.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        jTableTasks.getTableHeader().setBackground(new Color(0, 153, 102));
+        jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
         //criando um sort automatico para as colunas da table
         jTableTasks.setAutoCreateRowSorter(true);
     }
-    
-    public void initDataController(){
+
+    public void initDataController() {
         projectController = new ProjectController();
-        taskController = new TaskController();      
-    } 
-    
-    public void initComponentModel(){
+        taskController = new TaskController();
+    }
+
+    public void initComponentModel() {
         projectsModel = new DefaultListModel();
         loadProjects();
-        
+
         taskModel = new TaskTableModel();
         jTableTasks.setModel(taskModel);
         loadTask(2);
-        
+
     }
-    
-    public void loadProjects(){
+
+    public void loadProjects() {
         List<Project> projets = projectController.getAll();
         System.out.println(projets);
         projectsModel.clear();
-        
+
         for (int i = 0; i < projets.size(); i++) {
             Project project = projets.get(i);
             projectsModel.addElement(project);
         }
-        
+
         jListProjects.setModel(projectsModel);
-                
+
     }
-    public void loadTask (int idProject){
+
+    public void loadTask(int idProject) {
         List<Task> tasks = taskController.getAll(idProject);
         taskModel.setTasks(tasks);
-        
+
     }
 }
