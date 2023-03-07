@@ -240,6 +240,7 @@ public class MainScreen extends javax.swing.JFrame {
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel7.setLayout(new java.awt.BorderLayout());
 
         jPanelEmptyList.setBackground(new java.awt.Color(204, 204, 204));
         jPanelEmptyList.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -281,22 +282,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanelEmptyList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanelEmptyList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        jPanel7.add(jPanelEmptyList, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -371,15 +357,26 @@ public class MainScreen extends javax.swing.JFrame {
     private void jTableTasksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableTasksMouseClicked
         System.out.println("teste");
         
-        int rowInex = jTableTasks.rowAtPoint(evt.getPoint());
+        int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
 
+        Task task = taskModel.getTasks().get(rowIndex);
         switch (columnIndex) {           
             case 3:
-                Task task = taskModel.getTasks().get(rowInex);
+                //Task task = taskModel.getTasks().get(rowInex);
                 taskController.update(task);
                 break;
             case 4:
+                break;
+                
+            case 5: 
+               
+                taskController.removeById(task.getId());
+                taskModel.getTasks().remove(task);
+                
+                int projectIndex = jListProjects.getSelectedIndex();
+                Project project = (Project) projectsModel.get(rowIndex);
+                loadTask(project.getId());
                 break;
 
             default:
