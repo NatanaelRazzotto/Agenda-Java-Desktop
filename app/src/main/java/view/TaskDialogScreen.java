@@ -1,11 +1,12 @@
-
 package view;
+
 import controler.TaskController;
 import java.text.SimpleDateFormat;
 import model.Task;
 import model.Project;
 import java.util.Date;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Natanael
@@ -14,7 +15,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
     TaskController controller;
     Project project;
-    
+
     public TaskDialogScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -188,29 +189,36 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
     private void jLabelToolbarSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelToolbarSaveMouseClicked
         try {
-            Task task = new Task();
-           // task.setIdProject(project.getId());
-            task.setIdProject(project.getId());
-            task.setName(jTextName.getText());
-            task.setDescription(jTextAreaDescription.getText());
-            task.setNotes(jTextAreaNotes.getText());
-            task.setIsCompleted(false);
-            
-            SimpleDateFormat dateFormtat = new SimpleDateFormat("dd/MM/yyyy");
-            Date deadlne = null;
-            
-            deadlne = dateFormtat.parse(jFormattedTextFieldDeadline.getText());
-            task.setDeadline(deadlne);
-            controller.save(task);
-            
-            JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso");
-            
-            
+            if ((!jTextName.getText().equals("")
+                    && (!jFormattedTextFieldDeadline.getText().isEmpty()))) {
+                Task task = new Task();
+                // task.setIdProject(project.getId());
+                task.setIdProject(project.getId());
+                task.setName(jTextName.getText());
+                task.setDescription(jTextAreaDescription.getText());
+                task.setNotes(jTextAreaNotes.getText());
+                task.setIsCompleted(false);
+
+                SimpleDateFormat dateFormtat = new SimpleDateFormat("dd/MM/yyyy");
+                Date deadlne = null;
+
+                deadlne = dateFormtat.parse(jFormattedTextFieldDeadline.getText());
+                task.setDeadline(deadlne);
+                controller.save(task);
+
+                JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "A Tarefa não foi salva,"
+                        + " Pois existem campos não preenchidos");
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
             System.out.println(e);
+            this.dispose();
         }
-        this.dispose();
+
     }//GEN-LAST:event_jLabelToolbarSaveMouseClicked
 
     /**
@@ -274,7 +282,6 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
     public void setProject(Project project) {
         this.project = project;
-    } 
-    
+    }
 
 }
