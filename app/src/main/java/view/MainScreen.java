@@ -10,6 +10,8 @@ import javax.swing.DefaultListModel;
 import model.Project;
 import model.Task;
 import java.util.List;
+import util.ButtonColumnCellRenderer;
+import util.DeadlineColumnCellRender;
 import util.TaskTableModel;
 
 public class MainScreen extends javax.swing.JFrame {
@@ -21,11 +23,12 @@ public class MainScreen extends javax.swing.JFrame {
     TaskTableModel taskModel;
 
     public MainScreen() {
-        initComponents();
-        decorateTableTask();
+        initComponents();   
 
         initDataController();
         initComponentModel();
+        
+        decorateTableTask();
     }
 
     /**
@@ -380,7 +383,7 @@ public class MainScreen extends javax.swing.JFrame {
                 break;
 
             default:
-                throw new AssertionError();
+               break;
         }
 
     }//GEN-LAST:event_jTableTasksMouseClicked
@@ -477,8 +480,17 @@ public class MainScreen extends javax.swing.JFrame {
         jTableTasks.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         jTableTasks.getTableHeader().setBackground(new Color(0, 153, 102));
         jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
+        
+        jTableTasks.getColumnModel().getColumn(2)
+                .setCellRenderer(new DeadlineColumnCellRender());
+        //
+        jTableTasks.getColumnModel().getColumn(4)
+                .setCellRenderer(new ButtonColumnCellRenderer("edit"));
+        jTableTasks.getColumnModel().getColumn(5)
+                .setCellRenderer(new ButtonColumnCellRenderer("delete"));
+        
         //criando um sort automatico para as colunas da table
-        jTableTasks.setAutoCreateRowSorter(true);
+        //jTableTasks.setAutoCreateRowSorter(true);
     }
 
     public void initDataController() {
